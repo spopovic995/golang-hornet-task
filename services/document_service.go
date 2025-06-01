@@ -33,6 +33,7 @@ func (s *DocumentService) SearchDocuments(query string) ([]model.Document, error
 	return s.Repo.SearchByNameLogic(query)
 }
 
+// No implements keyword like in Java, if it has the methods it implements the interface automatically
 type DocumentServiceInterface interface {
 	SaveDocument(doc model.Document) error
 	GetAllDocuments() ([]model.Document, error)

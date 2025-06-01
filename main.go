@@ -10,6 +10,7 @@ import (
 )
 
 func main() {
+
 	// Initialize DB
 	database := db.InitDB()
 
@@ -18,7 +19,7 @@ func main() {
 	service := services.NewDocumentService(repo)
 	controller := controllers.NewDocumentController(service)
 
-	// Register HTTP routes
+	// Register HTTP routes, here it checks for the method of the request and calls the appropriate function
 	http.HandleFunc("/documents", func(w http.ResponseWriter, r *http.Request) {
 		switch r.Method {
 		case http.MethodPost:

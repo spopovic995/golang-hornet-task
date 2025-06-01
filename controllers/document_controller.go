@@ -12,6 +12,7 @@ type DocumentController struct {
 	Service services.DocumentServiceInterface
 }
 
+// This is like a constructor i Java, makes a new instance of the Controller class
 func NewDocumentController(service services.DocumentServiceInterface) *DocumentController {
 	return &DocumentController{Service: service}
 }
@@ -86,8 +87,9 @@ func (c *DocumentController) DeleteDocument(w http.ResponseWriter, r *http.Reque
 	w.Write([]byte("Document deleted successfully"))
 }
 
+// "http://localhost:8080/documents/search?name=x OR ma AND NOT blah" this is how my request will look like
 func (c *DocumentController) SearchDocuments(w http.ResponseWriter, r *http.Request) {
-	query := r.URL.Query().Get("q")
+	query := r.URL.Query().Get("name")
 	if query == "" {
 		http.Error(w, "Search query is required", http.StatusBadRequest)
 		return

@@ -63,6 +63,8 @@ func (r *DocumentRepository) DeleteById(id int64) bool {
 
 func (r *DocumentRepository) SearchByNameLogic(query string) ([]model.Document, error) {
 	baseSQL := "SELECT id, name, description FROM documents WHERE"
+
+	// this part here splits the query into an array of strings
 	tokens := strings.Fields(query)
 
 	var sqlParts []string
