@@ -5,9 +5,9 @@ import (
 	"golang-hornet-task/models"
 	"golang-hornet-task/services"
 	"net/http"
+	"strconv"
 )
 
-// DocumentController depends on the interface, so it can accept mocks in tests
 type DocumentController struct {
 	Service services.DocumentServiceInterface
 }
@@ -39,4 +39,66 @@ func (c *DocumentController) CreateDocument(w http.ResponseWriter, r *http.Reque
 	w.Write([]byte("Document created successfully"))
 }
 
-// Other methods omitted for brevity as you only requested CreateDocument test
+func (c *DocumentController) GetDocumentByID(w http.ResponseWriter, r *http.Request) {
+	idStr := r.URL.Query().Get("id")
+	id, err := strconv.ParseInt(idStr, 10, 64)
+	if err != nil {
+		http.Error(w, "Invalid ID format", http.StatusBadRequest)
+		return
+	}
+
+	doc, err := c.Service.GetDocumentByID(id)
+	if err != nil {
+		http.Error(w, "Document not found", http.StatusNotFound)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(doc)
+}
+
+func (c *DocumentController) GetAllDocuments(w http.ResponseWriter, r *http.Request) {
+	docs, err := c.Service.GetAllDocuments()
+	if err != nil {
+		http.Error(w, "Failed to fetch documents", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(docs)
+}
+
+func (c *DocumentController) DeleteDocument(w http.ResponseWriter, r *http.Request) {
+	idStr := r.URL.Query().Get("id")
+	id, err := strconv.ParseInt(idStr, 10, 64)
+	if err != nil {
+		http.Error(w, "Invalid ID format", http.StatusBadRequest)
+		return
+	}
+
+	success := c.Service.DeleteDocumentByID(id)
+	if !success {
+		http.Error(w, "Document not found", http.StatusNotFound)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("Document deleted successfully"))
+}
+
+func (c *DocumentController) SearchDocuments(w http.ResponseWriter, r *http.Request) {
+	query := r.URL.Query().Get("q")
+	if query == "" {
+		http.Error(w, "Search query is required", http.StatusBadRequest)
+		return
+	}
+
+	docs, err := c.Service.SearchDocuments(query)
+	if err != nil {
+		http.Error(w, "Failed to search documents", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(docs)
+}

@@ -7,7 +7,7 @@ import (
 	_ "github.com/glebarez/sqlite"
 )
 
-// public static Connection() initDB()
+// public static Connection initDB() in Java
 func InitDB() *sql.DB {
 
 	// returns multiple values, the result in db and if there is an error in err
