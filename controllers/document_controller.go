@@ -7,11 +7,12 @@ import (
 	"net/http"
 )
 
+// DocumentController depends on the interface, so it can accept mocks in tests
 type DocumentController struct {
-	Service *services.DocumentService
+	Service services.DocumentServiceInterface
 }
 
-func NewDocumentController(service *services.DocumentService) *DocumentController {
+func NewDocumentController(service services.DocumentServiceInterface) *DocumentController {
 	return &DocumentController{Service: service}
 }
 
@@ -37,3 +38,5 @@ func (c *DocumentController) CreateDocument(w http.ResponseWriter, r *http.Reque
 	w.WriteHeader(http.StatusCreated)
 	w.Write([]byte("Document created successfully"))
 }
+
+// Other methods omitted for brevity as you only requested CreateDocument test
