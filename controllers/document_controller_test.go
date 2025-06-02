@@ -11,6 +11,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+// A mock of the service, it's a placeholder for the real service
 type MockDocumentService struct {
 	// This i understand as a placeholder for a function, not yet defined
 	SaveDocumentFn func(doc models.Document) error

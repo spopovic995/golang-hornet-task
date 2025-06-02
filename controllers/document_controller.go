@@ -87,7 +87,7 @@ func (c *DocumentController) DeleteDocument(w http.ResponseWriter, r *http.Reque
 	w.Write([]byte("Document deleted successfully"))
 }
 
-// "http://localhost:8080/documents/search?name=x OR ma AND NOT blah" this is how my request will look like
+// "http://localhost:8080/documents/search?name=sasha OR Marco AND NOT Blah" this is how my request will look like
 func (c *DocumentController) SearchDocuments(w http.ResponseWriter, r *http.Request) {
 	query := r.URL.Query().Get("name")
 	if query == "" {
